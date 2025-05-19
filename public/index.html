@@ -77,7 +77,7 @@
 
 <body>
     <div id="app">
-        <h2>Bue Bue chat study</h2>
+        <h2>Bue Bue Chat </h2>
         <div id="chat-window">
             <div id="output"></div>
             <div id="feedback"></div>
@@ -96,7 +96,7 @@
         });
 
         let output = document.getElementById("output");
-        // let feedback = document.getElementById("feedback");
+        let feedback = document.getElementById("feedback");
         let name = document.getElementById("name");
         let message = document.getElementById("message");
         let send = document.getElementById('send');
@@ -121,8 +121,25 @@
                 </p>`
                 name.value = "";
                 message.value = "";
+                //name is typing lose
+                feedback.innerHTML = "";
+        });
 
-        })
+        message.addEventListener('keypress', () => {
+            socket.emit("typing", name.value)
+        });
+
+        socket.on("typing", (name) => {
+          feedback.innerHTML += `
+            <p>
+                <em>${name}</em> is typing...
+            </p>    
+          `;
+            //when user typing is stop and user is typing hide duraing 3s
+          setTimeout(()=> {
+            feedback.innerHTML = "";
+          }, 3000);
+        });
     </script>
 </body>
 

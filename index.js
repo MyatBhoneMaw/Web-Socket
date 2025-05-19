@@ -23,6 +23,10 @@ io.on('connection', (socket) => {
 //data is from chat at index.html
 socket.on("chat", (data) => {
     io.sockets.emit('chat', data);
+});
+
+socket.on("typing", (name) => {
+    socket.broadcast.emit("typing" , name);
 })
 console.log('socket connection is connected');
 })
